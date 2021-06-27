@@ -1,0 +1,143 @@
+﻿@model IEnumerable<Capa_Entidad.DATOS_VACANTE>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Message</h2>
+
+
+
+@section styles{
+    <link href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+}
+
+
+
+<center><h2>Vacantes</h2></center>
+<br />
+<br />
+
+@using (Capa_Datos.Bolsa_de_EmpleadosEntities db = new Capa_Datos.Bolsa_de_EmpleadosEntities())
+{
+    var categorias = (from datos in db.CATEGORIAS select datos).ToList();
+
+    var d = db.CATEGORIAS.ToList();
+
+
+    foreach (var item in categorias)
+    {
+
+        <table class="table" id="tabledemo">
+
+            @Html.ActionLink(item.CATEGORIA1, "Index2", new { id = item.id })
+
+            <thead>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Ubicacion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Posicion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Compañia)
+                    </th>
+                    <th></th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var ite in Model.Where(x => x.Categoria == item.CATEGORIA1).Take(10))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => ite.Ubicacion)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => ite.Posicion)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => ite.Compañia)
+                        </td>
+
+                        <td>
+                            <a class="btn btn-info" data-toggle="modal" data-target="#@ite.id">
+                                <i class="bi bi-info-circle"></i> Informacion
+
+                            </a>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="@ite.id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">@ite.Categoria</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <h1>@ite.Compañia</h1>
+                                            @ite.Ubicacion
+                                            <br />
+                                            @ite.Posicion - @ite.Tipo
+                                            <br />
+                                            <br />
+                                            @ite.Descripcion_Trabajo
+                                            <br />
+                                            <br />
+                                            Como Aplicar?
+                                            <br />
+                                            <br />
+                                            @ite.Como_Aplicar
+                                            <br />
+                                            <br />
+                                            <a href="mailto:@ite.Email?subject=Subject Using Mailto.co.uk&body=Email Using Mailto.co.uk"> @ite.Email</a>                                            
+
+                                                  
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <br />
+        <br />
+        <br />
+    }
+
+}
+
+@section scripts{
+    <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $('.table').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+
+        });
+    </script>
+}
+
+

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Capa_Entidad.CATEGORIA>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Categorias</h2>
+<br />
+
+<p>
+    @Html.ActionLink("Crear Categoria", "Create")
+   
+</p>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("CATEGORIA")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CATEGORIA1)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |         
+            @Html.ActionLink("Borrar", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
